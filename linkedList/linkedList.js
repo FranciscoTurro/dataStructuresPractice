@@ -40,7 +40,7 @@ const LinkedList = () => {
   };
 
   const getHead = () => {
-    return head.value;
+    return head;
   };
 
   const tail = () => {
@@ -48,7 +48,7 @@ const LinkedList = () => {
     while (temp.next != null) {
       temp = temp.next;
     }
-    return temp.value;
+    return temp;
   };
 
   const at = (index) => {
@@ -59,7 +59,7 @@ const LinkedList = () => {
       }
       temp = temp.next;
     }
-    return temp.value;
+    return temp;
   };
 
   const pop = () => {
@@ -106,6 +106,29 @@ const LinkedList = () => {
     return string + 'null';
   };
 
+  const insertAt = (value, index) => {
+    let temp = head;
+    let counter = 0;
+    for (let i = 0; i < index; i++) {
+      counter += 1;
+      if (temp.next === null) {
+        break;
+      }
+      temp = temp.next;
+    }
+    if (counter != index) return;
+    temp.value = value;
+  };
+
+  const removeAt = (index) => {
+    if (index === 0) {
+      head = head.next;
+      return;
+    }
+    let oneBefore = at(index - 1);
+    oneBefore.next = oneBefore.next.next;
+  };
+
   return {
     append,
     prepend,
@@ -117,6 +140,8 @@ const LinkedList = () => {
     contains,
     find,
     toString,
+    insertAt,
+    removeAt,
   };
 };
 
@@ -125,4 +150,6 @@ list.append(1);
 list.append(2);
 list.append(3);
 list.prepend(0);
+console.log(list.toString());
+list.removeAt(1);
 console.log(list.toString());
