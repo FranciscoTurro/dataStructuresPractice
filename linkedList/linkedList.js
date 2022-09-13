@@ -144,12 +144,3 @@ const LinkedList = () => {
     removeAt,
   };
 };
-
-const list = LinkedList();
-list.append(1);
-list.append(2);
-list.append(3);
-list.prepend(0);
-console.log(list.toString());
-list.removeAt(1);
-console.log(list.toString());
