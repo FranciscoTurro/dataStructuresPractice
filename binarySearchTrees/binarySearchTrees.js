@@ -7,9 +7,7 @@ const Node = (data) => {
 
 const Tree = (array) => {
   const buildTree = (array, start, end) => {
-    if (start > end) {
-      return null;
-    }
+    if (start > end) return null;
 
     let mid = parseInt((start + end) / 2);
     let node = Node(array[mid]);
@@ -34,34 +32,29 @@ const Tree = (array) => {
   };
 
   const deleteNode = (value, root = rootNode) => {
-    if (root == null) {
-      return root;
-    }
-    if (value < root.value) {
-      root.left = deleteNode(value, root.left);
-    } else if (value > root.value) {
-      root.right = deleteNode(value, root.right);
-    } else {
-      if (root.left == null) {
-        return root.right;
-      } else if (root.right == null) {
-        return root.left;
-      }
+    if (root == null) return root;
+
+    if (value < root.value) root.left = deleteNode(value, root.left);
+    else if (value > root.value) root.right = deleteNode(value, root.right);
+    else {
+      if (root.left == null) return root.right;
+      else if (root.right == null) return root.left;
       root.value = minValue(root.right);
       root.right = deleteNode(root.value, root.right);
     }
-  };
-
-  const minValue = (root) => {
-    let minv = root.value;
-    while (root != null) {
-      minv = root.value;
-      root = root.left;
-    }
-    return minv;
+    return root;
   };
 
   return { insertNode, rootNode, deleteNode };
+};
+
+const minValue = (root) => {
+  let minv = root.value;
+  while (root.left != null) {
+    minv = root.left.key;
+    root = root.left;
+  }
+  return minv;
 };
 
 const mergeSort = (array) => {
@@ -83,9 +76,20 @@ const elimDuplicates = (array) => {
   return [...new Set(mergeSort(array))];
 };
 
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+  if (node.right != null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+  }
+  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
+  if (node.left != null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+  }
+};
+
 const asd = [1, 2, 3, 4, 5, 6, 7];
 const ass = Tree(asd);
-console.log(ass.rootNode);
-ass.deleteNode(7);
+prettyPrint(ass.rootNode);
+
+ass.deleteNode(6);
 console.log('after deletion');
-console.log(ass.rootNode);
+prettyPrint(ass.rootNode);
