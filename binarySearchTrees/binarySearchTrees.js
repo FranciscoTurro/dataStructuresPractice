@@ -53,12 +53,25 @@ const Tree = (array) => {
     if (root.value > value) return find(value, root.left);
   };
 
-  const levelOrder = (root) => {
+  const levelOrder = () => {
+    root = rootNode;
     if (root == null) return;
     const queue = [];
+    const result = [];
+
+    queue.push(root);
+
+    while (queue.length > 0) {
+      let current = queue.shift();
+      result.push(current);
+
+      if (current.left != null) queue.push(current.left);
+      if (current.right != null) queue.push(current.right);
+    }
+    return result;
   };
 
-  return { insertNode, rootNode, deleteNode, find };
+  return { insertNode, rootNode, deleteNode, find, levelOrder };
 };
 
 const minValue = (root) => {
