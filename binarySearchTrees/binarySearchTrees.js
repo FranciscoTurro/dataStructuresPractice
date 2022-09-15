@@ -45,13 +45,26 @@ const Tree = (array) => {
     return root;
   };
 
-  return { insertNode, rootNode, deleteNode };
+  const find = (value, root = rootNode) => {
+    if (root == null || root.value == value) return root;
+
+    if (root.value < value) return find(value, root.right);
+
+    if (root.value > value) return find(value, root.left);
+  };
+
+  const levelOrder = (root) => {
+    if (root == null) return;
+    const queue = [];
+  };
+
+  return { insertNode, rootNode, deleteNode, find };
 };
 
 const minValue = (root) => {
   let minv = root.value;
-  while (root.left != null) {
-    minv = root.left.key;
+  while (root != null) {
+    minv = root.value;
     root = root.left;
   }
   return minv;
@@ -88,8 +101,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const asd = [1, 2, 3, 4, 5, 6, 7];
 const ass = Tree(asd);
-prettyPrint(ass.rootNode);
-
-ass.deleteNode(6);
-console.log('after deletion');
 prettyPrint(ass.rootNode);
