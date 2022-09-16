@@ -98,6 +98,23 @@ const Tree = (array) => {
     return arrayPostorder;
   };
 
+  const height = (root = rootNode) => {
+    if (root == null) return -1;
+    else {
+      let left = height(root.left);
+      let right = height(root.right);
+      return Math.max(left, right) + 1;
+    }
+  };
+
+  const depth = (value, root = rootNode, counter = 0) => {
+    if (root == null) return;
+    if (value == root.value) return counter;
+
+    if (value < root.value) return depth(value, root.left, counter + 1);
+    else if (value > root.value) return depth(value, root.right, counter + 1);
+  };
+
   return {
     insertNode,
     rootNode,
@@ -107,6 +124,8 @@ const Tree = (array) => {
     inorder,
     postorder,
     preorder,
+    height,
+    depth,
   };
 };
 
