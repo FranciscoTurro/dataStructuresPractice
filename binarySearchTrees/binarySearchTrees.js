@@ -17,6 +17,9 @@ const Tree = (array) => {
   };
 
   rootNode = buildTree(array, 0, array.length - 1);
+  arrayInorder = [];
+  arrayPostorder = [];
+  arrayPreorder = [];
 
   const insertNode = (value, root = rootNode) => {
     if (root === null) {
@@ -71,7 +74,40 @@ const Tree = (array) => {
     return result;
   };
 
-  return { insertNode, rootNode, deleteNode, find, levelOrder };
+  const inorder = (root) => {
+    if (root == null) return;
+    if (root.left != null) inorder(root.left);
+    if (root.value != undefined) arrayInorder.push(root.value);
+    if (root.right != null) inorder(root.right);
+    return arrayInorder;
+  };
+
+  const preorder = (root) => {
+    if (root == null) return;
+    if (root.value != undefined) arrayPreorder.push(root.value);
+    if (root.left != null) preorder(root.left);
+    if (root.right != null) preorder(root.right);
+    return arrayPreorder;
+  };
+
+  const postorder = (root) => {
+    if (root == null) return;
+    if (root.left != null) postorder(root.left);
+    if (root.right != null) postorder(root.right);
+    if (root.value != undefined) arrayPostorder.push(root.value);
+    return arrayPostorder;
+  };
+
+  return {
+    insertNode,
+    rootNode,
+    deleteNode,
+    find,
+    levelOrder,
+    inorder,
+    postorder,
+    preorder,
+  };
 };
 
 const minValue = (root) => {
@@ -112,6 +148,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
-const asd = [1, 2, 3, 4, 5, 6, 7];
-const ass = Tree(asd);
-prettyPrint(ass.rootNode);
+const arrayTEST = [1, 2, 3, 4, 5, 6, 7];
+const treeInstance = Tree(arrayTEST);
+prettyPrint(treeInstance.rootNode);
