@@ -115,6 +115,40 @@ const Tree = (array) => {
     else if (value > root.value) return depth(value, root.right, counter + 1);
   };
 
+  const isBalanced = (root) => {
+    if (root == null) return false;
+
+    let leftHalf = root.left;
+    let rightHalf = root.right;
+
+    if (Math.abs(height(leftHalf) - height(rightHalf)) > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const traverse = (root, array) => {
+    if (array !== undefined) array.push(root.value);
+    if (root.left != null) {
+      traverse(root.left, array);
+    }
+    if (root.right != null) {
+      traverse(root.right, array);
+    }
+    return array;
+  };
+
+  const rebalance = () => {
+    if (isBalanced(rootNode)) return rootNode;
+    else {
+      let arrayNewTree = [];
+      arrayNewTree = traverse(rootNode, arrayNewTree);
+      let newTree = Tree(arrayNewTree);
+      return newTree.rootNode;
+    }
+  };
+
   return {
     insertNode,
     rootNode,
@@ -126,6 +160,8 @@ const Tree = (array) => {
     preorder,
     height,
     depth,
+    isBalanced,
+    rebalance,
   };
 };
 
@@ -156,17 +192,3 @@ const mergeSort = (array) => {
 const elimDuplicates = (array) => {
   return [...new Set(mergeSort(array))];
 };
-
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node.right != null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
-  if (node.left != null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
-};
-
-const arrayTEST = [1, 2, 3, 4, 5, 6, 7];
-const treeInstance = Tree(arrayTEST);
-prettyPrint(treeInstance.rootNode);
