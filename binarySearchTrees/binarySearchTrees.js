@@ -93,7 +93,7 @@ const Tree = (arrayStart) => {
     return result;
   };
 
-  const inorder = (root, arrayInorder = []) => {
+  const inorder = (root = rootNode, arrayInorder = []) => {
     if (root == null) return;
     if (root.left != null) inorder(root.left, arrayInorder);
     if (root.value != undefined) arrayInorder.push(root.value);
@@ -101,7 +101,7 @@ const Tree = (arrayStart) => {
     return arrayInorder;
   };
 
-  const preorder = (root, arrayPreorder = []) => {
+  const preorder = (root = rootNode, arrayPreorder = []) => {
     if (root == null) return;
     if (root.value != undefined) arrayPreorder.push(root.value);
     if (root.left != null) preorder(root.left, arrayPreorder);
@@ -109,7 +109,7 @@ const Tree = (arrayStart) => {
     return arrayPreorder;
   };
 
-  const postorder = (root, arrayPostorder = []) => {
+  const postorder = (root = rootNode, arrayPostorder = []) => {
     if (root == null) return;
     if (root.left != null) postorder(root.left, arrayPostorder);
     if (root.right != null) postorder(root.right, arrayPostorder);
@@ -134,7 +134,7 @@ const Tree = (arrayStart) => {
     else if (value > root.value) return depth(value, root.right, counter + 1);
   };
 
-  const isBalanced = (root) => {
+  const isBalanced = (root = rootNode) => {
     if (root == null) return false;
 
     let leftHalf = root.left;
@@ -161,7 +161,7 @@ const Tree = (arrayStart) => {
   const rebalance = () => {
     let inorderList = inorder(rootNode);
     const balancedTree = buildTree(inorderList, 0, inorderList.length - 1);
-    return balancedTree;
+    rootNode = balancedTree;
   };
 
   const minValue = (root) => {
