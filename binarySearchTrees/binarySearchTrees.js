@@ -5,7 +5,26 @@ const Node = (data) => {
   return { value, right, left };
 };
 
-const Tree = (array) => {
+const Tree = (arrayStart) => {
+  const mergeSort = (array) => {
+    if (array.length === 1) return array;
+    const newArray = [];
+    const leftPart = mergeSort(array.slice(0, array.length / 2));
+    const rightPart = mergeSort(array.slice(array.length / 2));
+    while (leftPart.length && rightPart.length) {
+      if (leftPart[0] < rightPart[0]) {
+        newArray.push(leftPart.shift());
+      } else {
+        newArray.push(rightPart.shift());
+      }
+    }
+    return [...newArray, ...leftPart, ...rightPart];
+  };
+
+  const elimDuplicates = (array) => {
+    return [...new Set(mergeSort(array))];
+  };
+
   const buildTree = (array, start, end) => {
     if (start > end) return null;
 
@@ -16,13 +35,13 @@ const Tree = (array) => {
     return node;
   };
 
+  arrayStart = mergeSort(arrayStart);
+  let array = elimDuplicates(arrayStart);
+
   rootNode = buildTree(array, 0, array.length - 1);
-  arrayInorder = [];
-  arrayPostorder = [];
-  arrayPreorder = [];
 
   const insertNode = (value, root = rootNode) => {
-    if (root === null) {
+    if (root == null) {
       root = Node(value);
       return root;
     }
@@ -74,26 +93,26 @@ const Tree = (array) => {
     return result;
   };
 
-  const inorder = (root) => {
+  const inorder = (root, arrayInorder = []) => {
     if (root == null) return;
-    if (root.left != null) inorder(root.left);
+    if (root.left != null) inorder(root.left, arrayInorder);
     if (root.value != undefined) arrayInorder.push(root.value);
-    if (root.right != null) inorder(root.right);
+    if (root.right != null) inorder(root.right, arrayInorder);
     return arrayInorder;
   };
 
-  const preorder = (root) => {
+  const preorder = (root, arrayPreorder = []) => {
     if (root == null) return;
     if (root.value != undefined) arrayPreorder.push(root.value);
-    if (root.left != null) preorder(root.left);
-    if (root.right != null) preorder(root.right);
+    if (root.left != null) preorder(root.left, arrayPreorder);
+    if (root.right != null) preorder(root.right, arrayPreorder);
     return arrayPreorder;
   };
 
-  const postorder = (root) => {
+  const postorder = (root, arrayPostorder = []) => {
     if (root == null) return;
-    if (root.left != null) postorder(root.left);
-    if (root.right != null) postorder(root.right);
+    if (root.left != null) postorder(root.left, arrayPostorder);
+    if (root.right != null) postorder(root.right, arrayPostorder);
     if (root.value != undefined) arrayPostorder.push(root.value);
     return arrayPostorder;
   };
@@ -140,13 +159,18 @@ const Tree = (array) => {
   };
 
   const rebalance = () => {
-    if (isBalanced(rootNode)) return rootNode;
-    else {
-      let arrayNewTree = [];
-      arrayNewTree = traverse(rootNode, arrayNewTree);
-      let newTree = Tree(arrayNewTree);
-      return newTree.rootNode;
+    let inorderList = inorder(rootNode);
+    const balancedTree = buildTree(inorderList, 0, inorderList.length - 1);
+    return balancedTree;
+  };
+
+  const minValue = (root) => {
+    let minv = root.value;
+    while (root != null) {
+      minv = root.value;
+      root = root.left;
     }
+    return minv;
   };
 
   return {
@@ -165,30 +189,4 @@ const Tree = (array) => {
   };
 };
 
-const minValue = (root) => {
-  let minv = root.value;
-  while (root != null) {
-    minv = root.value;
-    root = root.left;
-  }
-  return minv;
-};
-
-const mergeSort = (array) => {
-  if (array.length === 1) return array;
-  const newArray = [];
-  const leftPart = mergeSort(array.slice(0, array.length / 2));
-  const rightPart = mergeSort(array.slice(array.length / 2));
-  while (leftPart.length && rightPart.length) {
-    if (leftPart[0] < rightPart[0]) {
-      newArray.push(leftPart.shift());
-    } else {
-      newArray.push(rightPart.shift());
-    }
-  }
-  return [...newArray, ...leftPart, ...rightPart];
-};
-
-const elimDuplicates = (array) => {
-  return [...new Set(mergeSort(array))];
-};
+module.exports = Tree;
